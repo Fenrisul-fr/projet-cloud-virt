@@ -22,7 +22,7 @@ set -euo pipefail
 # -------------------------------------------------------
 # Configuration — adapter à ton projet
 # -------------------------------------------------------
-GIT_REPO="https://github.com/tonorg/tonrepo.git"
+GIT_REPO="https://github.com/Fenrisul-fr/projet-cloud-virt"
 GIT_BRANCH="main"
 BUILD_DIR="/opt/app-build"          # Dossier de travail sur la VM
 API_IMAGE="image-api"               # Nom de l'image locale pour l'API/worker
