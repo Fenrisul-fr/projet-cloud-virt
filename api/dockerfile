@@ -1,0 +1,26 @@
+FROM python:3.11
+
+WORKDIR ./
+
+RUN pip install uv
+
+#pour copier tout le code  
+COPY . .
+
+RUN uv sync --no-dev --locked
+
+RUN uv pip install gunicorn
+
+ENV CELERY_BROKER_URL=redis://redis:6379/0
+ENV S3_ENDPOINT_URL=http://minio:9000
+ENV AWS_ACCESS_KEY_ID=minioadmin
+ENV AWS_SECRET_ACCESS_KEY=minioadmin
+ENV S3_BUCKET_NAME=images
+
+
+
+
+EXPOSE 8080
+
+
+CMD ["uv", "run", "--no-dev", "gunicorn", "--workers", "4", "--bind", "0.0.0.0:8080", "image_api.web:app"]
