@@ -1,0 +1,49 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - minio
+
+  worker:
+    build: ./api
+    command: uv run --no-dev celery --app image_api.worker.app worker
+    depends_on:
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+  redis:
+    image: redis:7.4
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"] 
+      interval: 5s
+      retries: 3
+
+  minio:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      retries: 3
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+  web:
+    build: ./web
+    ports:
+      - "3000:3000" 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000//health/live"] 
+      interval: 5s
+      retries: 3
+
+volumes:
+  minio_data:

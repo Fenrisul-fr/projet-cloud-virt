@@ -1,0 +1,9 @@
+integration open telemetry
+    appli et worker plug sur open telemetry
+
+deployer un prometheus pour collecter des traces / 
+
+
+
+
+AWS sert a mettre en place buckets pour storage.
