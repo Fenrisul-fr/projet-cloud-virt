@@ -27,7 +27,7 @@ GIT_BRANCH="main"
 BUILD_DIR="/opt/app-build"          # Dossier de travail sur la VM
 API_IMAGE="image-api"               # Nom de l'image locale pour l'API/worker
 WEB_IMAGE="image-web"               # Nom de l'image locale pour le frontend
-NOMAD_JOBS_DIR="/etc/nomad.d/jobs"  # Dossier des jobs .hcl
+NOMAD_JOBS_DIR="$BUILD_DIR/nomad/"
 
 SKIP_BUILD=false
 
