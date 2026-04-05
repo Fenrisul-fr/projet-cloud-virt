@@ -12,7 +12,7 @@
 # (127.0.0.1:8500), pas directement avec les servers.
 # ============================================================
 
-node_name = "nomad-client-1"  # Changer par VM : nomad-client-2, etc.
+node_name = "nomad-client-1"  # num a changer par VM : nomad-client-2, etc.
 data_dir  = "/opt/consul/data"
 
 # Ce nœud est un client (pas un server)
@@ -22,11 +22,11 @@ bind_addr  = "0.0.0.0"
 client_addr = "0.0.0.0"
 
 # Même clé de chiffrement que les servers
-encrypt = "REMPLACER_PAR_consul_keygen"
+#encrypt = "pour l'instant aucune"
 
 # Adresses des servers Consul pour rejoindre le cluster
 retry_join = [
-  "10.0.1.1",
+  "127.0.0.1",
   "10.0.1.2",
   "10.0.1.3",
 ]

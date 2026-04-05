@@ -39,14 +39,13 @@ ui_config {
 }
 
 # Chiffrement des communications entre membres du cluster.
-# Générer avec : consul keygen
 # Tous les membres du cluster doivent avoir la même clé.
-encrypt = "REMPLACER_PAR_consul_keygen"
+#encrypt = "pour l'instant aucune"
 
 # Liste des adresses IP des autres servers Consul pour former le cluster.
 # Consul va contacter ces adresses au démarrage pour rejoindre le cluster.
 retry_join = [
-  "10.0.1.1",  # IP privée du server Consul 1
+  "127.0.0.1",  # IP privée du server Consul 1
   "10.0.1.2",  # IP privée du server Consul 2
   "10.0.1.3",  # IP privée du server Consul 3
 ]

@@ -21,7 +21,7 @@ data_dir = "/opt/nomad/data"
 server {
   enabled          = true
   # Nombre de servers pour élire un leader (même logique que Consul)
-  bootstrap_expect = 3
+  bootstrap_expect = 1 #pour l'isntant j'en ai qu'un
 }
 
 # Intégration avec Consul :

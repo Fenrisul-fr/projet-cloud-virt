@@ -50,11 +50,7 @@ job "redis" {
       # Si le check échoue, Consul retire ce service de son registre
       # → les autres services ne lui enverront plus de trafic
       check {
-        type     = "script"
-        name     = "redis-ping"
-        # Nomad exécute cette commande DANS le conteneur
-        command  = "/usr/local/bin/redis-cli"
-        args     = ["ping"]
+        type     = "tcp"
         interval = "10s"
         timeout  = "3s"
       }

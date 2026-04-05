@@ -11,13 +11,7 @@ RUN uv sync --no-dev --locked
 
 RUN uv pip install gunicorn
 
-ENV CELERY_BROKER_URL=redis://redis:6379/0
-ENV S3_ENDPOINT_URL=http://minio:9000
-ENV AWS_ACCESS_KEY_ID=minioadmin
-ENV AWS_SECRET_ACCESS_KEY=minioadmin
-ENV S3_BUCKET_NAME=images
-
-
+#var d'env dans les fichiers de config nomad
 
 
 EXPOSE 8080

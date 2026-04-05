@@ -55,8 +55,10 @@ job "image-api" {
       driver = "docker"
 
       config {
-        image = "tonusername/image-api:latest"
+        image = "image-api:__IMAGE_TAG__"
+          #script bash remplace le tag par le dernier commit de l'image 
         ports = ["http"]
+        image_pull_policy = "never" # pull local
       }
 
       # -------------------------------------------------------
@@ -103,12 +105,9 @@ job "image-api" {
     service {
       name = "image-worker"
 
-      # Pas de check HTTP ici (pas de port exposé)
       # On check que le processus est vivant
       check {
-        type     = "script"
-        command  = "/bin/sh"
-        args     = ["-c", "celery --app image_api.worker.app inspect ping"]
+        type     = "tcp"
         interval = "30s"
         timeout  = "10s"
       }
@@ -118,13 +117,13 @@ job "image-api" {
       driver = "docker"
 
       config {
-        image   = "tonusername/image-api:latest"
-        # Override de la commande, comme "command" dans docker-compose
+        image   = "image-api:__IMAGE_TAG__"
+        image_pull_policy = "never"
+        #comme docker-compose ici
         command = "uv"
         args    = ["run", "--no-dev", "celery", "--app", "image_api.worker.app", "worker"]
       }
 
-      # Mêmes variables d'env que l'API (même image, même config)
       env {
         CELERY_BROKER_URL = "redis://redis.service.consul:6379/0"
         REDIS_URL         = "redis://redis.service.consul:6379/0"
@@ -135,8 +134,8 @@ job "image-api" {
       }
 
       resources {
-        cpu    = 512   # Le worker fait du traitement d'image → plus de CPU
-        memory = 1024  # Et plus de RAM
+        cpu    = 512   
+        memory = 1024  
       }
     }
   }
