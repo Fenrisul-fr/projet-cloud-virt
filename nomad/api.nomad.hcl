@@ -118,12 +118,12 @@ job "image-api" {
       }
 
       env {
-        CELERY_BROKER_URL = "redis://redis.service.consul:6379/0"
-        REDIS_URL         = "redis://redis.service.consul:6379/0"
-        S3_ENDPOINT_URL   = "http://minio.service.consul:9000"
-        S3_ACCESS_KEY     = "minioadmin"
-        S3_SECRET_KEY     = "minioadmin123"
-        S3_BUCKET_NAME    = "images"
+        CELERY_BROKER_URL     = "redis://redis.service.consul:6379/0"
+        REDIS_URL             = "redis://redis.service.consul:6379/0"
+        S3_ENDPOINT_URL       = "http://minio.service.consul:9000"
+        AWS_ACCESS_KEY_ID     = "minioadmin"
+        AWS_SECRET_ACCESS_KEY = "minioadmin123"
+        S3_BUCKET_NAME        = "images"
       }
 
       resources {
