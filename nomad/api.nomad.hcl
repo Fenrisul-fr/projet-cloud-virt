@@ -58,7 +58,7 @@ job "image-api" {
         image = "image-api:__IMAGE_TAG__"
           #script bash remplace le tag par le dernier commit de l'image 
         ports = ["http"]
-        force_pull = "false"
+        force_pull = "false" #prend via dépot local et pas docker hub
       }
 
       # -------------------------------------------------------

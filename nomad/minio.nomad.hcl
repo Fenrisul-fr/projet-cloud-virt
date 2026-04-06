@@ -25,10 +25,13 @@ job "minio" {
     # Ajouter meta { "vm.type" = "storage" } dans le nomad-client.hcl
     # de la VM dédiée au stockage.
     # -------------------------------------------------------
-    constraint {
-      attribute = "${meta.vm.type}"
-      value     = "storage"
-    }
+    
+
+    #ce sera pour la persistence plus tard
+    #constraint {
+    #  attribute = "${meta.vm.type}"
+    #  value     = "storage"
+    #}
 
     network {
       port "api" {
