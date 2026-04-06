@@ -58,7 +58,7 @@ job "image-api" {
         image = "image-api:__IMAGE_TAG__"
           #script bash remplace le tag par le dernier commit de l'image 
         ports = ["http"]
-        image_pull_policy = "never" # pull local
+        force_pull = "false"
       }
 
       # -------------------------------------------------------
@@ -104,13 +104,6 @@ job "image-api" {
 
     service {
       name = "image-worker"
-
-      # On check que le processus est vivant
-      check {
-        type     = "tcp"
-        interval = "30s"
-        timeout  = "10s"
-      }
     }
 
     task "worker" {
@@ -118,7 +111,7 @@ job "image-api" {
 
       config {
         image   = "image-api:__IMAGE_TAG__"
-        image_pull_policy = "never"
+        force_pull = "false"
         #comme docker-compose ici
         command = "uv"
         args    = ["run", "--no-dev", "celery", "--app", "image_api.worker.app", "worker"]
