@@ -88,7 +88,7 @@ job "minio" {
       # -------------------------------------------------------
       env {
         MINIO_ROOT_USER     = "minioadmin"       # À remplacer
-        MINIO_ROOT_PASSWORD = "minioadmin123"    # À remplacer par Vault
+        MINIO_ROOT_PASSWORD = "minioadmin"    # À remplacer par Vault
       }
 
       resources {
