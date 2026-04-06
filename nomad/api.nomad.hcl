@@ -77,8 +77,8 @@ job "image-api" {
 
         # MinIO / S3
         S3_ENDPOINT_URL   = "http://minio.service.consul:9000"
-        S3_ACCESS_KEY     = "minioadmin"       # À mettre dans Vault en prod
-        S3_SECRET_KEY     = "minioadmin123"    # À mettre dans Vault en prod
+        AWS_ACCESS_KEY_ID     = "minioadmin"          # À mettre dans Vault en prod 
+        AWS_SECRET_ACCESS_KEY = "minioadmin"       # À mettre dans Vault en prod
         S3_BUCKET_NAME    = "images"
       }
 
@@ -122,7 +122,7 @@ job "image-api" {
         REDIS_URL             = "redis://redis.service.consul:6379/0"
         S3_ENDPOINT_URL       = "http://minio.service.consul:9000"
         AWS_ACCESS_KEY_ID     = "minioadmin"
-        AWS_SECRET_ACCESS_KEY = "minioadmin123"
+        AWS_SECRET_ACCESS_KEY = "minioadmin"
         S3_BUCKET_NAME        = "images"
       }
 
