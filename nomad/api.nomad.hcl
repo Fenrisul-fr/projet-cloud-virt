@@ -55,8 +55,7 @@ job "image-api" {
       driver = "docker"
 
       config {
-        image = "image-api:__IMAGE_TAG__"
-          #script bash remplace le tag par le dernier commit de l'image 
+        image = "image-api:latest" 
         ports = ["http"]
         force_pull = "false" #prend via dépot local et pas docker hub
       }
@@ -110,7 +109,7 @@ job "image-api" {
       driver = "docker"
 
       config {
-        image   = "image-api:__IMAGE_TAG__"
+        image   = "image-api:latest"
         force_pull = "false"
         #comme docker-compose ici
         command = "uv"
