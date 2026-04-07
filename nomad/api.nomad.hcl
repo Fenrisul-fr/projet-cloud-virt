@@ -55,7 +55,7 @@ job "image-api" {
       driver = "docker"
 
       config {
-        image = "image-api:latest" 
+        image = "image-api:__IMAGE_TAG__" 
         ports = ["http"]
         force_pull = "false" #prend via dépot local et pas docker hub
       }
@@ -109,7 +109,7 @@ job "image-api" {
       driver = "docker"
 
       config {
-        image   = "image-api:latest"
+        image = "image-api:__IMAGE_TAG__" 
         force_pull = "false"
         #comme docker-compose ici
         command = "uv"
