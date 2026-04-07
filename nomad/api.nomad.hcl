@@ -58,7 +58,6 @@ job "image-api" {
         image = "image-api:__IMAGE_TAG__" 
         ports = ["http"]
         force_pull = "false" #prend via dépot local et pas docker hub
-        dns_servers   = ["172.17.0.1"] #dns docker et celui de base de la vm
       }
 
       # -------------------------------------------------------
@@ -71,15 +70,13 @@ job "image-api" {
       # (redis, minio) qui étaient résolus par le DNS Docker interne.
       # -------------------------------------------------------
       env {
-        # Celery / Redis
-        CELERY_BROKER_URL = "redis://redis.service.consul:6379/0"
-        REDIS_URL         = "redis://redis.service.consul:6379/0"
+        #broker
+        CELERY_BROKER_URL     = "amqp://pailhe:zjCOCaJh15VWCJg4qTL1@rabbitmq.maurice-cloud.fr:5672/pailhe"
 
-        # MinIO / S3
-        S3_ENDPOINT_URL   = "http://minio.service.consul:9000"
-        AWS_ACCESS_KEY_ID     = "minioadmin"          # À mettre dans Vault en prod 
-        AWS_SECRET_ACCESS_KEY = "minioadmin"       # À mettre dans Vault en prod
-        S3_BUCKET_NAME    = "images"
+        #S3
+        AWS_ACCESS_KEY_ID     = "a modifier"
+        AWS_SECRET_ACCESS_KEY = "a modifier"
+        S3_BUCKET_NAME        = "images"
       }
 
       resources {
@@ -118,11 +115,12 @@ job "image-api" {
       }
 
       env {
-        CELERY_BROKER_URL     = "redis://redis.service.consul:6379/0"
-        REDIS_URL             = "redis://redis.service.consul:6379/0"
-        S3_ENDPOINT_URL       = "http://minio.service.consul:9000"
-        AWS_ACCESS_KEY_ID     = "minioadmin"
-        AWS_SECRET_ACCESS_KEY = "minioadmin"
+        #broker
+        CELERY_BROKER_URL     = "amqp://pailhe:zjCOCaJh15VWCJg4qTL1@rabbitmq.maurice-cloud.fr:5672/pailhe"
+
+        #S3
+        AWS_ACCESS_KEY_ID     = "a modifier dans la vm"
+        AWS_SECRET_ACCESS_KEY = "pareil"
         S3_BUCKET_NAME        = "images"
       }
 
