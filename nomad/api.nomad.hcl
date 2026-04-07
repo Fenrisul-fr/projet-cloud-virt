@@ -58,6 +58,8 @@ job "image-api" {
         image = "image-api:__IMAGE_TAG__" 
         ports = ["http"]
         force_pull = "false" #prend via dépot local et pas docker hub
+        dns_servers   = ["172.17.0.1"]
+        dns_search_domains = ["service.consul"]
       }
 
       # -------------------------------------------------------
