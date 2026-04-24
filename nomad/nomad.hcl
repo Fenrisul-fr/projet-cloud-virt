@@ -1,12 +1,3 @@
-# ============================================================
-# nomad-client.hcl
-# Configuration du client Nomad (exécute les jobs)
-#
-# Tourne sur chaque VM qui va faire tourner des conteneurs.
-# Peut tourner sur la même VM qu'un server Nomad (petit cluster)
-# ou sur des VMs dédiées (grand cluster).
-# ============================================================
-
 datacenter = "dc1"
 data_dir   = "/opt/nomad/data"
 
@@ -16,15 +7,33 @@ client {
 
   # Métadonnées de cette VM : permet de cibler des jobs sur
   # des VMs spécifiques via les "constraints" dans les jobs.
-  # Exemple : forcer minio sur une VM avec un grand disque.
+ 
+  #nomad démarre pas sans ça
+  options = {
+    "fingerprint.denylist" = "env_aws"
+  } 
+
   meta {
     "vm.type" = "standard"
   }
 }
 
+# Active le mode server
+server {
+  enabled          = true
+  # Nombre de servers pour élire un leader
+  bootstrap_expect = 3
+}
 # Intégration Consul : même agent local
 consul {
   address = "127.0.0.1:8500"
+}
+
+vault {
+  enabled               = true
+  address               = "https://192.168.24.101:8200"  #addr du leader
+  ca_file               = "/opt/vault/tls/ca.crt"
+  jwt_auth_backend_path = "jwt"
 }
 
 # Configuration du driver Docker
@@ -35,12 +44,13 @@ plugin "docker" {
     # (nécessaire pour que Consul DNS fonctionne depuis les conteneurs)
     allow_privileged = false
 
-    # Volumes autorisés (pour minio_data)
+    # Volumes autorisés (je pense pas en avoir besoin puisque j'utilise le bucket S3)
     volumes {
       enabled = true
     }
   }
 }
+
 
 advertise {
   http = "{{ GetPrivateIP }}"

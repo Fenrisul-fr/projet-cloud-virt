@@ -20,29 +20,38 @@ job "web" {
     service {
       name = "web"
       port = "http"
-
+      provider = "consul"
       check {
         type     = "http"
-        path     = "/health/live"
+        path     = "/"
         interval = "10s"
         timeout  = "3s"
       }
+      tags = [
+	"traefik.enable=true",
+	"traefik.http.routers.web.rule=PathPrefix(`/`)",
+        "traefik.http.routers.web.priority=1", 
+	"traefik.http.services.web.loadbalancer.server.port=3000"]
     }
 
     task "web" {
       driver = "docker"
 
       config {
-        image = "tonusername/image-web:latest"
+        image = "fenrisul/projet-cloud-pailhe:web"
         ports = ["http"]
+        volumes = [
+	   "local/config.json:/dist/config.json", #modifie le config.json
+	   "local/config.json:/public/config.json"#dans le build de l'image
+        ]
       }
-
-      # Le frontend doit savoir où appeler l'API.
-      # En prod, on passerait plutôt par un reverse proxy (Traefik,
-      # Nginx) devant l'API, mais pour simplifier :
-      env {
-        # URL publique de l'API (à adapter selon ton setup réseau)
-        API_URL = "http://image-api.service.consul:8080"
+      template {
+        data = <<EOF
+{
+  "endpoint": "https://web.pailhe.maurice-cloud.fr/" # pour utiliser l'ip flottante
+}
+EOF
+	destination = "local/config.json"
       }
 
       resources {
