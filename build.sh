@@ -24,12 +24,16 @@ systemctl enable consul
 cd /opt
 if [ ! -d "infra" ]; then
 git clone $REPO_URL infra
+else 
+cd infra
+git pull
+cd ..
 fi
 
 # 4. Copy configs
 
 cp infra/vault/vault.hcl /etc/vault.d/vault.hcl
-cp infra//nomad/nomad.hcl /etc/nomad.d/nomad.hcl
+cp infra/nomad/nomad.hcl /etc/nomad.d/nomad.hcl
 cp infra/consul/consul.hcl /etc/consul.d/consul.hcl
 
 mkdir -p /opt/vault/tls
