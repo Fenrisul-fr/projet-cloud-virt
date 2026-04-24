@@ -147,7 +147,7 @@ openssl genrsa -out /opt/vault/tls/tls.key 4096
 
 openssl req -new -key /opt/vault/tls/tls.key -out /tmp/vm.csr -subj "/CN=vault-worker" 
 
-openssl x509 -req -in /tmp/vm.csr -CA /opt/vault/tls/ca.crt -CAkey /opt/vault/tls/ca.key -CAcreateserial -out /opt/vault/tls/tls.crt -days 365 -extfile <(echo "subjectAltName=IP:127.0.0.1")
+openssl x509 -req -in /tmp/vm.csr -CA /opt/vault/tls/ca.crt -CAkey /opt/vault/tls/ca.key -CAcreateserial -out /opt/vault/tls/tls.crt -days 365 -extfile <(echo "subjectAltName=IP:192.168.24.103,IP:127.0.0.1")
 
 chown vault:vault /opt/vault/tls/*
 
