@@ -47,11 +47,7 @@ echo "=== SETUP LEADER (VM1) ==="
 # Generate CA
 
 openssl genrsa -out /opt/vault/tls/ca.key 4096
-openssl req -x509 -new -nodes \
--key /opt/vault/tls/ca.key \
--days 365 \
--out /opt/vault/tls/ca.crt \
--subj "/CN=vault-ca"
+openssl req -x509 -new -nodes -key /opt/vault/tls/ca.key -days 365 -out /opt/vault/tls/ca.crt -subj "/CN=vault-ca"
 
 echo "=== START VAULT ==="
 systemctl restart vault
@@ -102,11 +98,7 @@ echo "=== Configuration Vault ==="
 
 vault secrets enable -path=secret kv-v2 || true
 
-vault kv put secret/image-api \
-aws_access_key_id="$AWS_ACCESS_KEY" \ 
-aws_secret_access_key="$AWS_SECRET_KEY" \ 
-broker_url="$BROKER_URL" \
-bucket_name="$BUCKET_NAME"
+vault kv put secret/image-api aws_access_key_id="$AWS_ACCESS_KEY" aws_secret_access_key="$AWS_SECRET_KEY" broker_url="$BROKER_URL" bucket_name="$BUCKET_NAME"
 
 echo "=== Policy image-api ==="
 
@@ -126,14 +118,7 @@ jwt_supported_algs="RS256,EdDSA"
 
 echo "=== Création rôle JWT image-api ==="
 
-vault write auth/jwt/role/image-api-role \
-role_type="jwt" \
-bound_audiences="vault.io" \ 
-user_claim="/nomad_job_id" \
-user_claim_json_pointer=true \
-bound_claims.nomad_job_id="image-api" \ 
-token_policies="image-api" \
-token_period="30m"
+vault write auth/jwt/role/image-api-role role_type="jwt" bound_audiences="vault.io" user_claim="/nomad_job_id" user_claim_json_pointer=true bound_claims.nomad_job_id="image-api" token_policies="image-api" token_period="30m"
 
 echo ""
 echo "=== IMPORTANT ==="
@@ -160,18 +145,9 @@ echo "=== Génération certificat signé ==="
 
 openssl genrsa -out /opt/vault/tls/tls.key 4096
 
-openssl req -new \
--key /opt/vault/tls/tls.key \ 
--out /tmp/vm.csr \
--subj "/CN=vault-worker" \
+openssl req -new -key /opt/vault/tls/tls.key -out /tmp/vm.csr -subj "/CN=vault-worker" 
 
-openssl x509 -req -in /tmp/vm.csr \ 
--CA /opt/vault/tls/ca.crt \
--CAkey /opt/vault/tls/ca.key \
--CAcreateserial \
--out /opt/vault/tls/tls.crt \
--days 365 \
--extfile <(echo "subjectAltName=IP:127.0.0.1")
+openssl x509 -req -in /tmp/vm.csr -CA /opt/vault/tls/ca.crt -CAkey /opt/vault/tls/ca.key -CAcreateserial -out /opt/vault/tls/tls.crt -days 365 -extfile <(echo "subjectAltName=IP:127.0.0.1")
 
 chown vault:vault /opt/vault/tls/*
 
