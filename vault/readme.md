@@ -49,7 +49,7 @@ sudo chown vault:vault /opt/vault/tls/tls.key /opt/vault/tls/tls.crt
 sudo systemctl restart vault
 
 
-#!!! changer les ip et les noms des vm !!!
+!!! changer les ip et les noms des vm !!!
 
 
 # pour débug 

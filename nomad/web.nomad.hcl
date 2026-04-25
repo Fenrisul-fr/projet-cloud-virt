@@ -44,11 +44,11 @@ job "web" {
 	   "local/config.json:/dist/config.json", #modifie le config.json
 	   "local/config.json:/public/config.json"#dans le build de l'image
         ]
-      }
+      } # pour utiliser l'ip flottante
       template {
         data = <<EOF
 {
-  "endpoint": "https://web.pailhe.maurice-cloud.fr/" # pour utiliser l'ip flottante
+  "endpoint": "https://web.pailhe.maurice-cloud.fr/"
 }
 EOF
 	destination = "local/config.json"
