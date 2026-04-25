@@ -150,7 +150,8 @@ openssl x509 -req -in /tmp/${VM_NAME}.csr \
   -days 365 \
   -extfile <(echo "subjectAltName=IP:${VM_IP},IP:127.0.0.1")
 
-chown -R vault:vault /opt/vault/tls
+chown vault:vault /opt/vault/tls/tls.key /opt/vault/tls/tls.crt
+
 log "Certificat généré et signé par le CA"
 
 # Vérification
