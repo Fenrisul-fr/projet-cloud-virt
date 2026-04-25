@@ -70,7 +70,7 @@ log "=== Étape 3 : Copie des configs ==="
 # Consul
 cp /opt/infra/consul/consul.hcl /etc/consul.d/consul.hcl
 # Injecte l'IP et le nom de la VM dans la config Consul
-echo "bind_addr = \"$IP\"" >> /etc/consul.d/consul.hcl
+echo "bind_addr = \"$VM_IP\"" >> /etc/consul.d/consul.hcl
 
 # Nomad
 cp /opt/infra/nomad/nomad.hcl /etc/nomad.d/nomad.hcl
