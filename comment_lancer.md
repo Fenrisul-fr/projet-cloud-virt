@@ -42,7 +42,7 @@ il faut "vault operator unseal" sur la vm qui a crash pour la reconnecter au raf
 Je n'ai pas eu le temps de mettre en place de logs via open telemetry ou de sauvegarde de snapshots sur vault
 
 
-
+Le endpoint pour la config json dans le job nomad "web" est personnel, je n'ai pas eu le temps de l'ajouter sur les credentials vault donc il faut le faire soit manuellement soit reprendre le même procédé que pour l'image-api et adapter.  
 
 
 # Rq
