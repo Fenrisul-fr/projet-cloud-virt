@@ -36,6 +36,14 @@ cp infra/vault/vault.hcl /etc/vault.d/vault.hcl
 cp infra/nomad/nomad.hcl /etc/nomad.d/nomad.hcl
 cp infra/consul/consul.hcl /etc/consul.d/consul.hcl
 
+#recup addr ip de la vm
+IP=$(hostname -I | awk '{print $1}') 
+
+echo "bind_addr = \"$IP\"" >> /etc/consul.d/consul.hcl
+
+
+
+
 mkdir -p /opt/vault/tls
 
 # =========================

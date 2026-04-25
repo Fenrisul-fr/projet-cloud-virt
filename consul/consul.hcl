@@ -48,7 +48,7 @@ server = true
 # Bind addr
 # You may use IPv4 or IPv6 but if you have multiple interfaces you must be explicit.
 #bind_addr = "[::]" # Listen on all IPv6
-bind_addr = "192.168.24.101" 
+#bind_addr = "192.168.24.101" c'est la config pour vm1 il faut modifier en fonction de l'ip de la vm 
 #
 # Advertise addr - if you want to point clients to a different address than bind or LB.
 
