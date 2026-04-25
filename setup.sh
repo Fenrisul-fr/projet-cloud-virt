@@ -132,7 +132,7 @@ else
 
   wget -q "http://${LEADER_IP}:9999/ca.crt" -O /opt/vault/tls/ca.crt
   wget -q "http://${LEADER_IP}:9999/ca.key" -O /opt/vault/tls/ca.key
-  log "CA récupéré depuis vm1 ✓"
+  log "CA récupéré depuis vm1"
 fi
 
 # Génère le certificat de CETTE VM signé par le CA
@@ -167,8 +167,17 @@ systemctl restart consul
 sleep 3
 systemctl restart nomad
 sleep 3
+
+if [ "$ROLE" == "worker" ]; then
+  log "Nettoyage du storage Raft..."
+  rm -rf /opt/vault/data/*
+  mkdir -p /opt/vault/data
+  chown -R vault:vault /opt/vault/data
+fi
+
 systemctl restart vault
 sleep 3
+
 
 export VAULT_ADDR="https://${VM_IP}:8200"
 export VAULT_CACERT="/opt/vault/tls/ca.crt"
