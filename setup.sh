@@ -28,8 +28,10 @@ log() { echo "[$(date '+%H:%M:%S')] $*"; }
 # Détecte l'IP privée de cette VM
 # -------------------------------------------------------
 VM_IP=$(hostname -I | awk '{print $1}')
+VM_IFACE=$(ip route get 8.8.8.8 | awk '{print $5; exit}')
 VM_NAME=$(hostname)
 log "VM IP détectée : $VM_IP"
+log "VM Interface détecté: $VM_IFACE"
 log "VM Name : $VM_NAME"
 
 # ============================================================
@@ -49,7 +51,7 @@ if [ ! -f /usr/share/keyrings/hashicorp-archive-keyring.gpg ]; then
 fi
 
 apt update -qq
-apt install -y vault nomad consul git
+apt install -y vault nomad consul git keepalived
 
 # ============================================================
 # ÉTAPE 2 : Récupération du repo
@@ -74,6 +76,45 @@ echo "bind_addr = \"$VM_IP\"" >> /etc/consul.d/consul.hcl
 
 # Nomad
 cp /opt/infra/nomad/nomad.hcl /etc/nomad.d/nomad.hcl
+
+# Keepalived config différente selon le rôle
+mkdir -p /etc/keepalived
+if [ "$ROLE" == "leader" ]; then
+  cat > /etc/keepalived/keepalived.conf <<EOF
+vrrp_instance ip_virt {
+    state MASTER
+    interface $VM_IFACE
+    virtual_router_id 51
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass pailhe
+    }
+    virtual_ipaddress {
+        192.168.24.110
+    }
+}
+EOF
+fi
+
+if [ "$ROLE" == "worker" ]; then
+  cat > /etc/keepalived/keepalived.conf <<EOF
+vrrp_instance ip_virt {
+    state BACKUP
+    interface $VM_IFACE
+    virtual_router_id 51
+    priority 60
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass pailhe
+    }
+    virtual_ipaddress {
+        192.168.24.110
+    }
+}
+EOF
 
 # Vault — config différente selon le rôle
 mkdir -p /opt/vault/tls /opt/vault/data
@@ -103,7 +144,7 @@ EOF
 chown vault:vault /etc/vault.d/vault.hcl
 
 # Active les services au démarrage
-systemctl enable consul nomad vault
+systemctl enable consul nomad vault keepalived
 
 # ============================================================
 # ÉTAPE 4 : Génération des certificats TLS
