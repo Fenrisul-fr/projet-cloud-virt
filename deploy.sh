@@ -12,6 +12,7 @@ JOBS_DIR="/opt/infra/nomad"
 
 systemctl restart consul
 systemctl restart nomad
+systemctl restart keepalived
 
 echo "=== Waiting for Nomad to be ready ==="
 
