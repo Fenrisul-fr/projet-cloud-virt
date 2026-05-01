@@ -115,6 +115,7 @@ vrrp_instance ip_virt {
     }
 }
 EOF
+fi
 
 # Vault — config différente selon le rôle
 mkdir -p /opt/vault/tls /opt/vault/data
